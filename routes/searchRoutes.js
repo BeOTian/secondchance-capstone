@@ -1,11 +1,13 @@
-// routes/searchRoutes.js
 const express = require('express');
 const router = express.Router();
 const connectToDatabase = require('../db');
 
-// Code to filter on category
 router.get('/', async (req, res) => {
+    const db = await connectToDatabase();
     const { category } = req.query;
-    res.json({ message: `Searching for category: ${category}` });
+    // Đã thêm logic gọi vào database để lọc
+    const items = await db.collection('items').find({ category }).toArray();
+    res.json(items);
 });
+
 module.exports = router;
